@@ -1,3 +1,4 @@
+using Company.BLL.Services;
 using Company.DAL.Data.Contexts;
 using Company.DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,7 @@ namespace Company.PL
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
                 );
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            builder.Services.AddScoped<IDepartmentService, DepartmentService>();
             #endregion
             var app = builder.Build();
 
