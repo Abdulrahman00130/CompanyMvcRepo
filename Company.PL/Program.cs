@@ -1,3 +1,8 @@
+using Company.DAL.Data.Contexts;
+using Company.DAL.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+
 namespace Company.PL
 {
     public class Program
@@ -6,12 +11,17 @@ namespace Company.PL
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            builder.Services.AddControllersWithViews();
+            #region Add services to the container.
 
+            builder.Services.AddControllersWithViews();
+            builder.Services.AddDbContext<AppDbContext>( options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+                );
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            #endregion
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            #region Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
@@ -28,7 +38,8 @@ namespace Company.PL
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Home}/{action=Index}/{id?}"); 
+            #endregion
 
             app.Run();
         }
