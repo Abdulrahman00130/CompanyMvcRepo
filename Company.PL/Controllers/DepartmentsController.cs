@@ -53,14 +53,16 @@ namespace Company.PL.Controllers
 
         #endregion
 
+        #region Details
         public IActionResult Details(int id)
         {
             var department = _departmentService.GetDepartmentById(id);
-            if(department is null)
+            if (department is null)
             {
                 return RedirectToAction("Index");
             }
             return View(department);
-        }
+        } 
+        #endregion
     }
 }
