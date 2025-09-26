@@ -45,7 +45,7 @@ namespace Company.BLL.Factories
                 Name = d.Name,
                 Code = d.Code,
                 Description = d.Description ?? string.Empty,
-                CreatedOn = new DateTime(d.CreateDate ?? new DateOnly(), new TimeOnly())
+                CreatedOn = new DateTime(d.CreateDate ?? DateOnly.FromDateTime(DateTime.Now), new TimeOnly())
             };
 
         public static Department ToEntity(this UpdatedDepartmentDTO d) =>
