@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Company.DAL.Models
+namespace Company.DAL.Models.Shared
 {
     public class BaseEntity
     {

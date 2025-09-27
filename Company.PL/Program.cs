@@ -1,6 +1,7 @@
 using Company.BLL.Services;
 using Company.DAL.Data.Contexts;
-using Company.DAL.Repositories;
+using Company.DAL.Repositories.Classes;
+using Company.DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 

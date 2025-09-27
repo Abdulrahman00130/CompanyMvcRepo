@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Company.DAL.Models.Shared;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Company.DAL.Models
+namespace Company.DAL.Models.Department
 {
     public class Department : BaseEntity
     {

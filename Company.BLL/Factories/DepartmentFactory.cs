@@ -1,5 +1,5 @@
 ﻿using Company.BLL.DataTransferObjects;
-using Company.DAL.Models;
+using Company.DAL.Models.Department;
 using System;
 using System.Collections.Generic;
 using System.Linq;

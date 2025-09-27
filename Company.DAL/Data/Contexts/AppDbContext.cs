@@ -1,4 +1,6 @@
 ﻿
+using Company.DAL.Models.Department;
+
 namespace Company.DAL.Data.Contexts
 {
     public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
@@ -9,5 +11,6 @@ namespace Company.DAL.Data.Contexts
         }
 
         public DbSet<Department> Departments { get; set; }
+        public DbSet<Employee> Employees { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Company.BLL.DataTransferObjects;
 using Company.BLL.Factories;
-using Company.DAL.Repositories;
+using Company.DAL.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +20,7 @@ namespace Company.BLL.Services
         public int AddDepartment(CreatedDepartmentDTO createdDepartment) =>
             _departmentRepository.Add(createdDepartment.ToEntity());
         public int UpdateDepartment(UpdatedDepartmentDTO updatedDepartment) =>
-            _departmentRepository.Add(updatedDepartment.ToEntity());
+            _departmentRepository.Update(updatedDepartment.ToEntity());
         public bool RemoveDepartment(int id)
         {
             var dept = _departmentRepository.GetById(id);
