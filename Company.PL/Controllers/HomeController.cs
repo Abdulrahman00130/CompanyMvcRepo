@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using Company.PL.Models;
+using Company.PL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Company.PL.Controllers
