@@ -1,4 +1,5 @@
-﻿@model CreatedDepartmentDTO
+﻿@using Company.BLL.DataTransferObjects.DepartmentDTOs
+@model CreatedDepartmentDTO
 @{
     ViewData["Title"] = "Create";
 }
@@ -34,3 +35,9 @@
         </div>
     </form>
 </div>
+
+@section ValidationScripts
+{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

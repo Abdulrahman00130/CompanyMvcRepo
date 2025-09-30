@@ -4,6 +4,7 @@ using Company.DAL.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,9 +15,13 @@ namespace Company.DAL.Repositories.Classes
         public IEnumerable<TEntity> GetAll(bool isTracked = false)
         {
             if (isTracked)
-                return _context.Set<TEntity>().ToList();
+                return _context.Set<TEntity>().Where(e => e.IsDeleted == false).ToList();
             else
-                return _context.Set<TEntity>().AsNoTracking().ToList();
+                return _context.Set<TEntity>().Where(e => e.IsDeleted == false).AsNoTracking().ToList();
+        }
+        public IEnumerable<TResult> GetAll<TResult>(Expression<Func<TEntity,TResult>> selector)
+        {
+                return _context.Set<TEntity>().Where(e => e.IsDeleted == false).Select(selector).ToList();
         }
 
         public TEntity? GetById(int id)

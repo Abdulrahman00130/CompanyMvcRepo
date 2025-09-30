@@ -1,5 +1,6 @@
-﻿using Company.BLL.DataTransferObjects;
+﻿using Company.BLL.DataTransferObjects.DepartmentDTOs;
 using Company.BLL.Factories;
+using Company.BLL.Services.Interfaces;
 using Company.DAL.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Company.BLL.Services
+namespace Company.BLL.Services.Classes
 {
     public class DepartmentService(IDepartmentRepository _departmentRepository) : IDepartmentService
     {

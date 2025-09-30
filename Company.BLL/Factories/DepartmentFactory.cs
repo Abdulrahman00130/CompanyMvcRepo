@@ -1,4 +1,4 @@
-﻿using Company.BLL.DataTransferObjects;
+﻿using Company.BLL.DataTransferObjects.DepartmentDTOs;
 using Company.DAL.Models.Department;
 using System;
 using System.Collections.Generic;

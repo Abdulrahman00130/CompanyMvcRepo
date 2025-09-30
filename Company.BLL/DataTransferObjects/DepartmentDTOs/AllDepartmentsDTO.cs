@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Company.BLL.DataTransferObjects
+namespace Company.BLL.DataTransferObjects.DepartmentDTOs
 {
     public class AllDepartmentsDTO
     {

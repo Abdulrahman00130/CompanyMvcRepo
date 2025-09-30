@@ -1,6 +1,6 @@
-﻿using Company.BLL.DataTransferObjects;
+﻿using Company.BLL.DataTransferObjects.DepartmentDTOs;
 
-namespace Company.BLL.Services
+namespace Company.BLL.Services.Interfaces
 {
     public interface IDepartmentService
     {

@@ -1,5 +1,6 @@
 ﻿using Company.BLL.DataTransferObjects;
-using Company.BLL.Services;
+using Company.BLL.DataTransferObjects.DepartmentDTOs;
+using Company.BLL.Services.Interfaces;
 using Company.PL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 

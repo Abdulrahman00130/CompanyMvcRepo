@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Company.BLL.DataTransferObjects
+namespace Company.BLL.DataTransferObjects.DepartmentDTOs
 {
-    public class DepartmentByIdDTO
+    public class CreatedDepartmentDTO
     {
-        public int Id { get; set; }
+        [Required(ErrorMessage = "Name is required!!!")]
         public string Name { get; set; }
+        [Required]
+        [Range(100, int.MaxValue)]
         public string Code { get; set; }
         public string? Description { get; set; } = string.Empty;
-        public int? CreatedBy { get; set; }
-        public int? LastModifiedBy { get; set; }
         public DateOnly? CreateDate { get; set; }
-        public DateOnly? LastModifiedDate { get; set; }
-        public bool IsDeleted { get; set; }
 
     }
 }
