@@ -1,4 +1,4 @@
-﻿using Company.DAL.Models.Employee;
+﻿using Company.DAL.Models.EmployeeModel;
 using Company.DAL.Models.Shared.Enums;
 using System.ComponentModel.DataAnnotations;
 
@@ -34,7 +34,11 @@ namespace Company.PL.ViewModels
         [Display(Name = "Hiring Date")]
         public DateOnly HiringDate { get; set; }
         public Gender Gender { get; set; }
+
         [Display(Name = "Employee Type")]
         public EmployeeType EmployeeType { get; set; }
+
+        [Display(Name = "Department")]
+        public int? DepartmentId { get; set; }
     }
 }

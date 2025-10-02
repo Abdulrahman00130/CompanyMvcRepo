@@ -1,6 +1,6 @@
 ﻿using Company.BLL.DataTransferObjects.EmployeeDTOs;
 using Company.BLL.Services.Interfaces;
-using Company.DAL.Models.Employee;
+using Company.DAL.Models.EmployeeModel;
 using Company.DAL.Models.Shared.Enums;
 using Company.PL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -43,7 +43,8 @@ namespace Company.PL.Controllers
                         Gender = employeeViewModel.Gender,
                         HiringDate = employeeViewModel.HiringDate,
                         PhoneNumber = employeeViewModel.PhoneNumber,
-                        Salary = employeeViewModel.Salary
+                        Salary = employeeViewModel.Salary,
+                        DepartmentId = employeeViewModel.DepartmentId,
                     });
 
                     string message;
@@ -99,7 +100,8 @@ namespace Company.PL.Controllers
                 HiringDate = employee.HiringDate,
                 Salary = employee.Salary,
                 Gender = Enum.Parse<Gender>(employee.Gender),
-                EmployeeType = Enum.Parse<EmployeeType>(employee.EmployeeType)
+                EmployeeType = Enum.Parse<EmployeeType>(employee.EmployeeType),
+                DepartmentId = employee.DepartmentId,
             });
         }
 
@@ -122,7 +124,8 @@ namespace Company.PL.Controllers
                     Gender = employeeViewModel.Gender,
                     HiringDate= employeeViewModel.HiringDate,
                     PhoneNumber = employeeViewModel.PhoneNumber,
-                    Salary = employeeViewModel.Salary
+                    Salary = employeeViewModel.Salary,
+                    DepartmentId = employeeViewModel.DepartmentId
                 });
                 if (result > 0)
                 {

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Company.BLL.DataTransferObjects.EmployeeDTOs;
 using Company.BLL.Services.Interfaces;
-using Company.DAL.Models.Employee;
+using Company.DAL.Models.EmployeeModel;
 using Company.DAL.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -16,8 +16,8 @@ namespace Company.BLL.Services.Classes
     {
         public IEnumerable<EmployeeDTO> GetAllEmployees(bool isTracked = false)
         {
-            //return _employeeRepository.GetAll(isTracked).Select(e => _mapper.Map<EmployeeDTO>(e));
-            return _employeeRepository.GetAll(e => _mapper.Map<EmployeeDTO>(e));
+            return _employeeRepository.GetAll(isTracked).Select(e => _mapper.Map<EmployeeDTO>(e));
+            //return _employeeRepository.GetAll(e => _mapper.Map<EmployeeDTO>(e));
         }
 
         public EmployeeDetailsDTO? GetById(int id)

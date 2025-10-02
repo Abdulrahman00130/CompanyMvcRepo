@@ -1,4 +1,4 @@
-﻿using Company.DAL.Models.Employee;
+﻿using Company.DAL.Models.EmployeeModel;
 using Company.DAL.Models.Shared.Enums;
 using System;
 using System.Collections.Generic;
@@ -43,5 +43,8 @@ namespace Company.BLL.DataTransferObjects.EmployeeDTOs
         public Gender Gender { get; set; }
         [Display(Name = "Employee Type")]
         public EmployeeType EmployeeType { get; set; }
+
+        [Display(Name = "Department")]
+        public int? DepartmentId { get; set; }
     }
 }

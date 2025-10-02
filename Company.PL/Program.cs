@@ -22,7 +22,8 @@ namespace Company.PL
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
 
             builder.Services.AddDbContext<AppDbContext>( options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+               .UseLazyLoadingProxies());
 
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();

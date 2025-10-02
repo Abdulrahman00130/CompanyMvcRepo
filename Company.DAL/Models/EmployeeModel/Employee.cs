@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Company.DAL.Models.Employee
+namespace Company.DAL.Models.EmployeeModel
 {
     public class Employee : BaseEntity
     {
@@ -20,6 +20,9 @@ namespace Company.DAL.Models.Employee
         public DateTime HiringDate { get; set; }
         public Gender Gender { get; set; }
         public EmployeeType EmployeeType { get; set; }
+
+        public int? DepartmentId { get; set; }
+        public virtual Department? Department { get; set; }
         
     }
 }
