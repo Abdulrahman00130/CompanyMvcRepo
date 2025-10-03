@@ -23,6 +23,13 @@ namespace Company.DAL.Repositories.Classes
         {
                 return _context.Set<TEntity>().Where(e => e.IsDeleted == false).Select(selector).ToList();
         }
+        public IEnumerable<TEntity> GetAll(Expression<Func<TEntity,bool>> predicate)
+        {
+                return _context.Set<TEntity>()
+                               .Where(e => e.IsDeleted == false)
+                               .Where(predicate)
+                               .ToList();
+        }
 
         public TEntity? GetById(int id)
         {
