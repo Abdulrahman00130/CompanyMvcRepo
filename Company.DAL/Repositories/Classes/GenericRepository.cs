@@ -36,23 +36,20 @@ namespace Company.DAL.Repositories.Classes
             return _context.Set<TEntity>().Find(id);
         }
 
-        public int Add(TEntity entity)
+        public void Add(TEntity entity)
         {
-            if (entity is null) return 0;
+            if (entity is null) return;
             _context.Add(entity);
-            return _context.SaveChanges();
         }
-        public int Update(TEntity entity)
+        public void Update(TEntity entity)
         {
-            if (entity is null) return 0;
+            if (entity is null) return;
             _context.Update(entity);
-            return _context.SaveChanges();
         }
-        public int Remove(TEntity entity)
+        public void Remove(TEntity entity)
         {
-            if (entity is null) return 0;
+            if (entity is null) return;
             _context.Remove(entity);
-            return _context.SaveChanges();
         }
     }
 }
