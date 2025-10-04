@@ -25,8 +25,8 @@ namespace Company.PL
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
                .UseLazyLoadingProxies());
 
-            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
-            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            //builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            //builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();

@@ -10,19 +10,19 @@ namespace Company.DAL.Repositories.Classes
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly IDepartmentRepository _departmentRepository;
-        private readonly IEmployeeRepository _employeeRepository;
+        private readonly Lazy<IDepartmentRepository> departmentRepository;
+        private readonly Lazy<IEmployeeRepository> employeeRepository;
         private readonly AppDbContext _appDbContext;
 
-        public UnitOfWork(IDepartmentRepository departmentRepository, IEmployeeRepository employeeRepository, AppDbContext appDbContext)
+        public UnitOfWork(AppDbContext appDbContext)
         {
-            this._departmentRepository = departmentRepository;
-            this._employeeRepository = employeeRepository;
+            this.departmentRepository = new Lazy<IDepartmentRepository>(() => new DepartmentRepository(appDbContext));
+            this.employeeRepository = new Lazy<IEmployeeRepository>(() => new EmployeeRepository(appDbContext));
             this._appDbContext = appDbContext;
         }
-        public IDepartmentRepository DepartmentRepository => _departmentRepository;
+        public IDepartmentRepository DepartmentRepository => departmentRepository.Value;
 
-        public IEmployeeRepository EmployeeRepository => _employeeRepository;
+        public IEmployeeRepository EmployeeRepository => employeeRepository.Value;
 
         public int SaveChanges() => _appDbContext.SaveChanges();
     }
