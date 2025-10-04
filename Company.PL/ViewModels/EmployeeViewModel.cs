@@ -1,15 +1,10 @@
 ﻿using Company.DAL.Models.EmployeeModel;
 using Company.DAL.Models.Shared.Enums;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Company.BLL.DataTransferObjects.EmployeeDTOs
+namespace Company.PL.ViewModels
 {
-    public class CreatedEmployeeDTO
+    public class EmployeeViewModel
     {
         [Required]
         [MaxLength(50, ErrorMessage = "Max length should be 50 character")]
@@ -39,6 +34,7 @@ namespace Company.BLL.DataTransferObjects.EmployeeDTOs
         [Display(Name = "Hiring Date")]
         public DateOnly HiringDate { get; set; }
         public Gender Gender { get; set; }
+
         [Display(Name = "Employee Type")]
         public EmployeeType EmployeeType { get; set; }
 

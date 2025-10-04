@@ -1,5 +1,4 @@
-﻿using Company.DAL.Models.Employee;
-using Company.DAL.Models.Shared.Enums;
+﻿using Company.DAL.Models.Shared.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -25,5 +24,7 @@ namespace Company.BLL.DataTransferObjects.EmployeeDTOs
 
         [Display(Name = "Employee Type")]
         public string EmpType { get; set; }
+        public string? Department { get; set; }
+
     }
 }

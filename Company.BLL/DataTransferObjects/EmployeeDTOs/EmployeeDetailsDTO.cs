@@ -1,5 +1,4 @@
-﻿using Company.DAL.Models.Employee;
-using Company.DAL.Models.Shared.Enums;
+﻿using Company.DAL.Models.Shared.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -26,5 +25,7 @@ namespace Company.BLL.DataTransferObjects.EmployeeDTOs
         public int? LastModifiedBy { get; set; }
         public DateTime? CreatedOn { get; set; }
         public DateTime? LastModifiedOn { get; set; }
+        public int? DepartmentId { get; set; }
+        public string? Department {  get; set; }
     }
 }

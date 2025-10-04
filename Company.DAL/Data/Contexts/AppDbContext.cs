@@ -1,6 +1,4 @@
 ﻿
-using Company.DAL.Models.Department;
-
 namespace Company.DAL.Data.Contexts
 {
     public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)

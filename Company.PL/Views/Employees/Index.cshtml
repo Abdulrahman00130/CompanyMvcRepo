@@ -3,10 +3,44 @@
     ViewData["Title"] = "Index";
 }
 
+@if (!string.IsNullOrWhiteSpace(TempData["Message"] as string))
+{
+    <div aria-live="polite" aria-atomic="true" class="toast-container position-fixed p-3" style="bottom: 25px; right:25px; z-index: 100;">
+        <div class="toast fade show " role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto text-success">Success!!</strong>
+                <small>Just now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                @TempData["Message"]
+            </div>
+        </div>
+    </div>
+}
+
+
 <h1>All Employees</h1>
 <br />
 <br />
 <a class="btn btn-primary" asp-controller="Employees" asp-action="Create">Create Employee</a>
+<br />
+
+
+<div class="m-2">
+    <form asp-action="index" class="row offset-2" method="get">
+        <div class="col-8">
+            <input class="form-control" type="text" name="EmployeeSearchName" placeholder="Search Employee By Name" />
+        </div>
+        <div class="col-4">
+            <input type="submit" class="btn btn-outline-success" value="Search" />
+
+        </div>
+    </form>
+
+</div>
+
+
 <br />
 @if (Model.Any())
 {
@@ -17,6 +51,7 @@
                 <th>@Html.DisplayNameFor(e => e.Email)</th>
                 <th>@Html.DisplayNameFor(e => e.EmpType)</th>
                 <th>@Html.DisplayNameFor(e => e.Age)</th>
+                <th>@Html.DisplayNameFor(e => e.Department)</th>
                 <th>@Html.DisplayNameFor(e => e.Salary)</th>
                 <th>@Html.DisplayNameFor(e => e.IsActive)</th>
                 <th>@Html.DisplayNameFor(e => e.EmpGender)</th>
@@ -34,22 +69,18 @@
                     <td>@employee.Email</td>
                     <td>@employee.EmpType</td>
                     <td>@employee.Age</td>
+                    <td>@(string.IsNullOrEmpty(employee.Department) ? "No Department" : employee.Department)</td>
                     <td>@Html.DisplayFor(e => employee.Salary)</td>
                     <td>
                         <i class="fa-solid @(employee.IsActive ? "fa-circle-check text-success" : "fa-circle-xmark text-danger")"></i>
                     </td>
                     <td>@employee.EmpGender</td>
 
-                    <td>
-                        <a class="btn btn-primary" asp-action="Details" asp-route-id="@employee.Id">
-                            <i class="fas fa-eye"></i> Details
-                        </a>
-                    </td>
-                    <td>
-                        <a class="btn btn-success" asp-action="Edit" asp-route-id="@employee.Id">
-                            <i class="fas fa-edit"></i> Edit
-                        </a>
-                    </td>
+
+                    @* @Html.PartialAsync("_ButtonPartialView", employee.Id) *@
+                    <partial name="_ButtonPartialView" model="employee.Id" />
+
+
                     <td>
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-@employee.Id">
                             <i class="fas fa-trash"></i> Delete

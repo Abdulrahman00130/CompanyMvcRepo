@@ -9,7 +9,7 @@ namespace Company.BLL.Services.Interfaces
 {
     public interface IEmployeeService
     {
-        public IEnumerable<EmployeeDTO> GetAllEmployees(bool isTracked = false);
+        public IEnumerable<EmployeeDTO> GetAllEmployees(string? EmployeeSearchName);
         public EmployeeDetailsDTO GetById(int id);
         public int CreateEmployee(CreatedEmployeeDTO employeeDTO);
         public int UpdateEmployee(UpdatedEmployeeDTO employeeDTO);

@@ -19,14 +19,15 @@ namespace Company.PL
             #region Add services to the container.
 
             builder.Services.AddControllersWithViews(options =>
-            options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute())
-            );
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
+
             builder.Services.AddDbContext<AppDbContext>( options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
-                );
+               .UseLazyLoadingProxies());
 
-            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
-            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            //builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            //builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
             builder.Services.AddScoped<IEmployeeService, EmployeeService>();
