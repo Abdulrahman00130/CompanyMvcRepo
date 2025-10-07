@@ -1,0 +1,34 @@
+﻿@model EmployeeViewModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="row justify-content-center align-content-center mt-3">
+    <h1 class="col-8 my-4">Edit Employee</h1>
+    <form method="post" asp-controller="Employees" asp-action="Edit" class="row col-8" enctype="multipart/form-data">
+
+        @if(string.IsNullOrWhiteSpace(Model.ImageName))
+        {
+            <p>No image available</p>
+        }
+        else
+        {
+            <img src=~/Files/Images/@Model.ImageName class="img-fluid rounded-circle w-25" style="width: 200px" alt="Image" />
+        }
+
+        <partial name="PartialViews/EditCreatePartialView" />
+
+
+
+        <div class="mt-4 m-auto">
+            <input class="btn btn-success" type="submit" value="Save" />
+            <a asp-controller="Employees" asp-action="Index" class="btn btn-outline-dark">Back to list</a>
+        </div>
+    </form>
+</div>
+
+@section ValidationScripts
+{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
