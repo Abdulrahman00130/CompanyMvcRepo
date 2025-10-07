@@ -3,8 +3,10 @@ using Company.BLL.Services.AttachmentService;
 using Company.BLL.Services.Classes;
 using Company.BLL.Services.Interfaces;
 using Company.DAL.Data.Contexts;
+using Company.DAL.Models.IdentityModels;
 using Company.DAL.Repositories.Classes;
 using Company.DAL.Repositories.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -35,6 +37,15 @@ namespace Company.PL
             builder.Services.AddScoped<IAttachmentService, AttachmentService>();
 
             builder.Services.AddAutoMapper(m => m.AddProfile(new MappingProfiles()));
+
+            builder.Services.AddIdentity<AppUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>();
+
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/Login";
+            });
+
             #endregion
             var app = builder.Build();
 
@@ -51,6 +62,7 @@ namespace Company.PL
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

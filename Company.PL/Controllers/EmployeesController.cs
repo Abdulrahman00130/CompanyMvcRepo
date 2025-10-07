@@ -3,10 +3,12 @@ using Company.BLL.Services.Interfaces;
 using Company.DAL.Models.EmployeeModel;
 using Company.DAL.Models.Shared.Enums;
 using Company.PL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Company.PL.Controllers
 {
+    [Authorize]
     public class EmployeesController(IEmployeeService _employeeService,
                                      ILogger<EmployeesController> _logger,
                                      IWebHostEnvironment _environment) : Controller

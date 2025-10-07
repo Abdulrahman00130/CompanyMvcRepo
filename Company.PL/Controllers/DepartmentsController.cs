@@ -2,10 +2,12 @@
 using Company.BLL.DataTransferObjects.DepartmentDTOs;
 using Company.BLL.Services.Interfaces;
 using Company.PL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Company.PL.Controllers
 {
+    [Authorize]
     public class DepartmentsController(IDepartmentService _departmentService ,
         ILogger<DepartmentsController> _logger,
         IWebHostEnvironment _environment) : Controller
