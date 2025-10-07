@@ -33,7 +33,7 @@ namespace Company.DAL.Repositories.Classes
 
         public TEntity? GetById(int id)
         {
-            return _context.Set<TEntity>().Find(id);
+            return _context.Set<TEntity>().AsNoTracking().FirstOrDefault(E => E.Id == id);
         }
 
         public void Add(TEntity entity)

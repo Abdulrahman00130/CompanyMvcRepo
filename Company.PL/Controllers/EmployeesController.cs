@@ -45,6 +45,7 @@ namespace Company.PL.Controllers
                         PhoneNumber = employeeViewModel.PhoneNumber,
                         Salary = employeeViewModel.Salary,
                         DepartmentId = employeeViewModel.DepartmentId,
+                        Image = employeeViewModel.Image,
                     });
 
                     string message;
@@ -102,6 +103,7 @@ namespace Company.PL.Controllers
                 Gender = Enum.Parse<Gender>(employee.Gender),
                 EmployeeType = Enum.Parse<EmployeeType>(employee.EmployeeType),
                 DepartmentId = employee.DepartmentId,
+                ImageName = employee.ImageName,
             });
         }
 
@@ -125,7 +127,8 @@ namespace Company.PL.Controllers
                     HiringDate= employeeViewModel.HiringDate,
                     PhoneNumber = employeeViewModel.PhoneNumber,
                     Salary = employeeViewModel.Salary,
-                    DepartmentId = employeeViewModel.DepartmentId
+                    DepartmentId = employeeViewModel.DepartmentId,
+                    Image = employeeViewModel.Image,
                 });
                 if (result > 0)
                 {

@@ -1,4 +1,5 @@
 using Company.BLL.Profiles;
+using Company.BLL.Services.AttachmentService;
 using Company.BLL.Services.Classes;
 using Company.BLL.Services.Interfaces;
 using Company.DAL.Data.Contexts;
@@ -31,6 +32,7 @@ namespace Company.PL
 
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
             builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+            builder.Services.AddScoped<IAttachmentService, AttachmentService>();
 
             builder.Services.AddAutoMapper(m => m.AddProfile(new MappingProfiles()));
             #endregion

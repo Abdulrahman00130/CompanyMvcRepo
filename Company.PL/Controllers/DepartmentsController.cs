@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Company.PL.Controllers
 {
-    public class DepartmentsController(IDepartmentService _departmentService,
+    public class DepartmentsController(IDepartmentService _departmentService ,
         ILogger<DepartmentsController> _logger,
         IWebHostEnvironment _environment) : Controller
     {

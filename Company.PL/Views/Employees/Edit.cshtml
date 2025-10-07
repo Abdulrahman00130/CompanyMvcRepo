@@ -5,7 +5,16 @@
 
 <div class="row justify-content-center align-content-center mt-3">
     <h1 class="col-8 my-4">Edit Employee</h1>
-    <form method="post" asp-controller="Employees" asp-action="Edit" class="row col-8">
+    <form method="post" asp-controller="Employees" asp-action="Edit" class="row col-8" enctype="multipart/form-data">
+
+        @if(string.IsNullOrWhiteSpace(Model.ImageName))
+        {
+            <p>No image available</p>
+        }
+        else
+        {
+            <img src=~/Files/Images/@Model.ImageName class="img-fluid rounded-circle w-25" style="width: 200px" alt="Image" />
+        }
 
         <partial name="PartialViews/EditCreatePartialView" />
 
