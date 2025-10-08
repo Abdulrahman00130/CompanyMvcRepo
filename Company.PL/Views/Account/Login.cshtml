@@ -7,13 +7,13 @@
 <div class="main-agileinfo">
     <div class="agileits-top">
         <form asp-action="Login" method="post">
-            <div asp-validation-summary="All"></div>
+            <div asp-validation-summary="All" class="text-danger"></div>
 
             <input asp-for="Email" placeholder="Email">
-            <span asp-validation-for="Email"></span>
+            <span asp-validation-for="Email" class="text-danger"></span>
             <br />
             <input asp-for="Password" placeholder="Password">
-            <span asp-validation-for="Password"></span>
+            <span asp-validation-for="Password" class="text-danger"></span>
             <br />
 
             <div class="wthree-text">
@@ -26,10 +26,6 @@
             <input type="submit" value="SIGNIN">
         </form>
         <p>Don't have an Account? <a asp-action="Register"> Register Now!</a></p>
+        <p><a asp-action="ForgetPassword"> Forget Password?</a></p>
     </div>
 </div>
-
-@section Validation {
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-}

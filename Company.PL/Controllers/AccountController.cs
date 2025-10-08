@@ -1,4 +1,5 @@
 ﻿using Company.DAL.Models.IdentityModels;
+using Company.PL.Utilities;
 using Company.PL.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -73,5 +74,47 @@ namespace Company.PL.Controllers
         }
 
         #endregion
+
+        #region Logout
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            var result = _signInManager.SignOutAsync();
+            if (!result.IsCompletedSuccessfully) TempData["FailMessage"] = "LogOut failed";
+
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+        #endregion
+
+        #region Forget Password
+        [HttpGet]
+        public IActionResult ForgetPassword() => View();
+
+        [HttpPost]
+        public IActionResult SendResetPasswordLink(ForgetPasswordViewModel viewModel)
+        {
+            if(ModelState.IsValid)
+            {
+                var user = _userManager.FindByEmailAsync(viewModel.Email).Result;
+                if (user is not null)
+                {
+                    var email = new Email
+                    {
+                        To = viewModel.Email,
+                        Subject = "Reset Password",
+                        Body = "Reset Password Link",   // To Do
+                    };
+                    // Send Email
+                    EmailSettings.SendEmail(email);
+                    return RedirectToAction("CheckYourInbox");
+                }
+            }
+
+            ModelState.AddModelError(string.Empty, "Invalid Operation");
+            return View(nameof(ForgetPassword),viewModel);
+        }
+        #endregion
+
+        public IActionResult CheckYourInbox() => View();
     }
 }
