@@ -108,7 +108,7 @@ namespace Company.PL.Controllers
                     };
                     // Send Email
                     EmailSettings.SendEmail(email);
-                    return RedirectToAction("CheckYourInbox");
+                    return RedirectToAction(nameof(AccountController.CheckYourInbox));
                 }
             }
 
@@ -131,11 +131,10 @@ namespace Company.PL.Controllers
         [HttpPost]
         public IActionResult ResetPassword(ResetPasswordViewModel viewModel)
         {
+            string email = TempData["email"] as string ?? string.Empty;
+            string token = TempData["token"] as string ?? string.Empty;
             if (ModelState.IsValid)
             {
-                string email = TempData["email"] as string ?? string.Empty;
-                string token = TempData["token"] as string ?? string.Empty;
-                
                 var user  = _userManager.FindByEmailAsync(email).Result;
                 if (user is not null)
                 {
@@ -149,6 +148,8 @@ namespace Company.PL.Controllers
                 }
             }
 
+            TempData.Keep("email");
+            TempData.Keep("token");
             ModelState.AddModelError("", "Invalid Operation");
             return View(viewModel);
         }

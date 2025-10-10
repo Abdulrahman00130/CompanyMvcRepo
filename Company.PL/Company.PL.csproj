@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Views\User\PartialViews\" />
     <Folder Include="wwwroot\Files\Images\" />
   </ItemGroup>
 
