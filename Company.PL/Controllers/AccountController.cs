@@ -98,11 +98,13 @@ namespace Company.PL.Controllers
                 var user = _userManager.FindByEmailAsync(viewModel.Email).Result;
                 if (user is not null)
                 {
+                    string token = _userManager.GeneratePasswordResetTokenAsync(user).Result;
+                    string url = Url.Action("ResetPassword", "Account", new {viewModel.Email, Token = token}, "https", "localhost:44301");
                     var email = new Email
                     {
                         To = viewModel.Email,
-                        Subject = "Reset Password",
-                        Body = "Reset Password Link",   // To Do
+                        Subject = "CompanyMvc password reset link",
+                        Body = $"Click the link below to reset your password\n\n{url}",   // To Do
                     };
                     // Send Email
                     EmailSettings.SendEmail(email);
@@ -116,5 +118,40 @@ namespace Company.PL.Controllers
         #endregion
 
         public IActionResult CheckYourInbox() => View();
+
+        #region ResetPassword
+        [HttpGet]
+        public IActionResult ResetPassword(string email, string token)
+        {
+            TempData["email"] = email;
+            TempData["token"] = token;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ResetPassword(ResetPasswordViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                string email = TempData["email"] as string ?? string.Empty;
+                string token = TempData["token"] as string ?? string.Empty;
+                
+                var user  = _userManager.FindByEmailAsync(email).Result;
+                if (user is not null)
+                {
+                    var result = _userManager.ResetPasswordAsync(user, token, viewModel.Password).Result;
+
+                    if (result.Succeeded)
+                        return RedirectToAction(nameof(AccountController.Login));
+
+                    foreach (var error in result.Errors)
+                        ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+
+            ModelState.AddModelError("", "Invalid Operation");
+            return View(viewModel);
+        }
+        #endregion
     }
 }
