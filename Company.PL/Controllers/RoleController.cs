@@ -1,4 +1,5 @@
-﻿using Company.PL.ViewModels;
+﻿using Company.DAL.Models.IdentityModels;
+using Company.PL.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,8 @@ namespace Company.PL.Controllers
     [Authorize]
     public class RoleController(RoleManager<IdentityRole> _roleManager,
                                 ILogger<RoleController> _logger,
-                                IWebHostEnvironment _environment) : Controller
+                                IWebHostEnvironment _environment,
+                                UserManager<AppUser> _userManager) : Controller
     {
         #region Index
         public IActionResult Index(string roleSearchName)
@@ -207,6 +209,99 @@ namespace Company.PL.Controllers
             TempData["FailedDelete"] = "Invalid Operation";
             return RedirectToAction(nameof(Index));
 
+        }
+        #endregion
+
+        #region Add Or Remove User
+        [HttpGet]
+        public IActionResult AddOrRemoveUser(string id)
+        {
+            if(id is null) return BadRequest();
+            var role = _roleManager.FindByIdAsync(id).Result;
+            if (role is null) return NotFound();
+
+            List<UserInRoleViewModel> usersInRoles;
+            var users = _userManager.Users.ToList();
+
+            if (users.Any())
+            {
+                usersInRoles = users.Select(u => new UserInRoleViewModel
+                {
+                    Id = u.Id,
+                    Username = u.UserName,
+                    IsSelected = _userManager.IsInRoleAsync(u, role.Name).Result
+                }).ToList();
+            }
+            else usersInRoles = null;
+
+            ViewData["RoleId"] = id;
+            return View(usersInRoles);
+
+        }
+
+        [HttpPost]
+        public IActionResult AddOrRemoveUser(string roleId, List<UserInRoleViewModel> userInRoleViewModels)
+        {
+            if(roleId is null || userInRoleViewModels is null) return BadRequest();
+
+            var role = _roleManager.FindByIdAsync(roleId).Result;
+            if (role is null) return NotFound();
+
+            if(!ModelState.IsValid)
+            {
+                ViewData["RoleId"] = roleId;
+                return View(userInRoleViewModels);
+            }
+
+            try
+            {
+                foreach(var userInRoleVM in userInRoleViewModels)
+                {
+                    var user = _userManager.FindByIdAsync(userInRoleVM.Id).Result;
+                    if (user is null) continue;
+
+                    if(userInRoleVM.IsSelected && !_userManager.IsInRoleAsync(user, role.Name).Result)
+                    {
+                        var result = _userManager.AddToRoleAsync(user, role.Name).Result;
+                        if(!result.Succeeded)
+                        {
+                            foreach (var error in result.Errors)
+                                ModelState.AddModelError("", error.Description);
+
+                            ViewData["RoleId"] = roleId;
+                            return View(userInRoleViewModels);
+                        }
+                    }
+                    else if (!userInRoleVM.IsSelected && _userManager.IsInRoleAsync(user, role.Name).Result)
+                    {
+                        var result = _userManager.RemoveFromRoleAsync(user, role.Name).Result;
+                        if (!result.Succeeded)
+                        {
+                            foreach (var error in result.Errors)
+                                ModelState.AddModelError("", error.Description);
+
+                            ViewData["RoleId"] = roleId;
+                            return View(userInRoleViewModels);
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                if (_environment.IsDevelopment())
+                {
+                    ViewData["RoleId"] = roleId;
+                    ModelState.AddModelError("",ex.Message);
+                    return View(userInRoleViewModels);
+                }
+                else
+                {
+                    _logger.LogError(ex.Message);
+                    return View("ErrorView", ex);
+                }
+            }
+
+            return RedirectToAction(nameof(Edit), new { id = roleId });
         }
         #endregion
     }

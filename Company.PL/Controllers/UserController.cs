@@ -26,7 +26,7 @@ namespace Company.PL.Controllers
                     LName = u.LastName,
                     Email = u.Email,
                     PhoneNumber = u.PhoneNumber,
-                    Roles = _userManager.GetRolesAsync(u).Result
+                    Roles = _userManager.GetRolesAsync(u).Result.ToList()
                 }).ToList();
             }
             else
@@ -39,7 +39,7 @@ namespace Company.PL.Controllers
                     LName = u.LastName,
                     Email = u.Email,
                     PhoneNumber = u.PhoneNumber,
-                    Roles = _userManager.GetRolesAsync(u).Result
+                    Roles = _userManager.GetRolesAsync(u).Result.ToList()
                 }).ToList();
             }
 

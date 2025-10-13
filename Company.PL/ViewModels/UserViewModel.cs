@@ -14,6 +14,6 @@ namespace Company.PL.ViewModels
 
         [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
-        public IList<string> Roles { get; set; }
+        public List<string> Roles { get; set; }
     }
 }

@@ -22,6 +22,11 @@
             <input asp-for="RoleName" class="form-control" />
             <span asp-validation-for="RoleName" class="text-danger"></span>
         </div>
+
+        <div class="mt-4 m-auto">
+            <a asp-controller="Role" asp-action="AddOrRemoveUser" asp-route-id="@Model.Id" class="btn btn-outline-success">Add Or Remove User</a>
+        </div>
+
         <div class="mt-4 m-auto">
             <input class="btn btn-success" type="submit" value="Save" />
             <a asp-controller="Role" asp-action="Index" class="btn btn-outline-dark">Back to list</a>
