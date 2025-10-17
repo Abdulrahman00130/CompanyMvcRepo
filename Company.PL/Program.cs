@@ -49,7 +49,14 @@ namespace Company.PL
             builder.Services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/Account/Login";
+                options.LogoutPath = "/Account/Logout";
                 options.AccessDeniedPath = "/Account/AccessDenied";
+
+                // Crucial for OAuth cross-site flows — and browsers require Secure when SameSite=None
+                options.Cookie.SameSite = SameSiteMode.None;
+
+                // For local development, prefer SameAsRequest; for production use Always
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             });
 
             builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
@@ -58,16 +65,32 @@ namespace Company.PL
             builder.Services.AddScoped<IEmailService, EmailService>();
             builder.Services.AddScoped<ITwilioService, TwilioService>();
 
-            builder.Services.AddAuthentication(o =>
-            {
-                o.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
-                o.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-            }).AddGoogle(o =>
-            {
-                o.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-                o.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+            //builder.Services.AddAuthentication(o =>
+            //{
+            //    o.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
+            //    o.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+            //}).AddGoogle(o =>
+            //{
+            //    o.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+            //    o.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
 
+            //});
+
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = IdentityConstants.ApplicationScheme;
+                options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
+                options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
+            })
+            .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+            {
+                options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+                options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+
+                options.CorrelationCookie.SameSite = SameSiteMode.None;
             });
+
 
             #endregion
             var app = builder.Build();
