@@ -28,7 +28,12 @@ namespace Company.PL.Controllers
         public IActionResult Register(RegisterViewModel viewModel)
         {
             if(!ModelState.IsValid) return View(viewModel);
-
+            var existUser = _userManager.FindByEmailAsync(viewModel.Email).Result;
+            if(existUser is not null)
+            {
+                ModelState.AddModelError("", "Email address is taken");
+                return View(viewModel);
+            }
             var user = new AppUser 
             { 
                 UserName = viewModel.UserName,
