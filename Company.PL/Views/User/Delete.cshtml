@@ -1,0 +1,42 @@
+﻿@model UserDetailsViewModel
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1 class="my-5 w-75">Are you sure to remove the user "@Model.FName @Model.LName" ?</h1>
+
+
+<!-- General Tab Content -->
+<div>
+
+    <div class="row">
+        <div class="form-group col-12">
+            <label class="col-form-label" asp-for="Id"></label>
+            <input asp-for="Id" class="form-control" readonly />
+        </div>
+        <div class="form-group col-12">
+            <label class="col-form-label" asp-for="FName"></label>
+            <input asp-for="FName" class="form-control" readonly />
+        </div>
+        <div class="form-group col-12">
+            <label class="col-form-label" asp-for="LName"></label>
+            <input asp-for="LName" class="form-control" readonly />
+        </div>
+        <div class="form-group col-12">
+            <label class="col-form-label" asp-for="Email"></label>
+            <input asp-for="Email" class="form-control" readonly />
+        </div>
+        <div class="form-group col-12">
+            <label class="col-form-label" asp-for="PhoneNumber"></label>
+            <input asp-for="PhoneNumber" class="form-control" readonly />
+        </div>
+
+        <div class="mt-4 m-auto">
+            <form asp-action="ConfirmDelete" asp-controller="User" asp-route-id="@Model.Id" class="mt-4">
+            <input class="btn btn-danger" type="submit" value="Remove" />
+            <a asp-controller="User" asp-action="Index" class="btn btn-outline-dark">Back to list</a>
+            </form>
+        </div>
+    </div>
+</div>
+

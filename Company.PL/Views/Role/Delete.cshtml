@@ -1,0 +1,31 @@
+﻿@model RoleViewModel
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1 class="my-5 w-75">Are you sure to remove the role "@Model.RoleName" ?</h1>
+
+
+<!-- General Tab Content -->
+<div>
+
+    <div class="row">
+        <div class="form-group col-12">
+            <label class="col-form-label" asp-for="Id"></label>
+            <input asp-for="Id" class="form-control" readonly />
+        </div>
+        <div class="form-group col-12">
+            <label class="col-form-label" asp-for="RoleName"></label>
+            <input asp-for="RoleName" class="form-control" readonly />
+        </div>
+
+        <div class="mt-4 m-auto">
+            <form asp-action="ConfirmDelete" asp-controller="Role" asp-route-id="@Model.Id" class="mt-4">
+                <input class="btn btn-danger" type="submit" value="Remove" />
+                <a asp-controller="Role" asp-action="Index" class="btn btn-outline-dark">Back to list</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+

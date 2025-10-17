@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Company.PL.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin,Moderator")]
     public class DepartmentsController(IDepartmentService _departmentService ,
         ILogger<DepartmentsController> _logger,
         IWebHostEnvironment _environment) : Controller
@@ -138,6 +138,7 @@ namespace Company.PL.Controllers
         //    return View(dept);
         //}
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Delete(int id)
         {
