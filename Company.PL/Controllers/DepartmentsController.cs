@@ -2,11 +2,13 @@
 using Company.BLL.DataTransferObjects.DepartmentDTOs;
 using Company.BLL.Services.Interfaces;
 using Company.PL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Company.PL.Controllers
 {
-    public class DepartmentsController(IDepartmentService _departmentService,
+    [Authorize(Roles = "Admin,Moderator")]
+    public class DepartmentsController(IDepartmentService _departmentService ,
         ILogger<DepartmentsController> _logger,
         IWebHostEnvironment _environment) : Controller
     {
@@ -136,6 +138,7 @@ namespace Company.PL.Controllers
         //    return View(dept);
         //}
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Delete(int id)
         {

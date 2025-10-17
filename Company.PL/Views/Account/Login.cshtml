@@ -1,0 +1,48 @@
+﻿@model LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+}
+
+@if (!string.IsNullOrWhiteSpace(TempData["FailMessage"] as string))
+{
+    <div aria-live="polite" aria-atomic="true" class="toast-container position-fixed p-3" style="bottom: 25px; right:25px; z-index: 100;">
+        <div class="toast fade show " role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto text-danger">Fail!</strong>
+                <small>Just now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                @TempData["FailMessage"]
+            </div>
+        </div>
+    </div>
+}
+
+<div class="main-agileinfo">
+    <div class="agileits-top">
+        <form asp-action="Login" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <input asp-for="Email" placeholder="Email">
+            <span asp-validation-for="Email" class="text-danger"></span>
+            <br />
+            <input asp-for="Password" placeholder="Password">
+            <span asp-validation-for="Password" class="text-danger"></span>
+            <br />
+
+            <div class="wthree-text">
+                <label class="anim">
+                    <input asp-for="RememberMe" class="checkbox">
+                    <span>Keep Me Signed In</span>
+                </label>
+                <div class="clear"> </div>
+            </div>
+            <input type="submit" value="SIGNIN">
+            <p><a class="btn" asp-action="GoogleLogin">Login With Google</a></p>
+        </form>
+        <p>Don't have an Account? <a asp-action="Register"> Register Now!</a></p>
+        <p><a asp-action="ForgetPassword"> Forget Password?</a></p>
+    </div>
+</div>

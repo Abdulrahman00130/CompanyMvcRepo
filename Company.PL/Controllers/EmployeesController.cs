@@ -3,10 +3,12 @@ using Company.BLL.Services.Interfaces;
 using Company.DAL.Models.EmployeeModel;
 using Company.DAL.Models.Shared.Enums;
 using Company.PL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Company.PL.Controllers
 {
+    [Authorize]
     public class EmployeesController(IEmployeeService _employeeService,
                                      ILogger<EmployeesController> _logger,
                                      IWebHostEnvironment _environment) : Controller
@@ -15,6 +17,11 @@ namespace Company.PL.Controllers
         {
             var employees = _employeeService.GetAllEmployees(EmployeeSearchName);
             return View(employees);
+        }
+        public IActionResult Search(string? EmployeeSearchName)
+        {
+            var employees = _employeeService.GetAllEmployees(EmployeeSearchName);
+            return PartialView("PartialViews/EmployeeTablePartialView", employees);
         }
 
         #region Create
@@ -45,6 +52,7 @@ namespace Company.PL.Controllers
                         PhoneNumber = employeeViewModel.PhoneNumber,
                         Salary = employeeViewModel.Salary,
                         DepartmentId = employeeViewModel.DepartmentId,
+                        Image = employeeViewModel.Image,
                     });
 
                     string message;
@@ -102,6 +110,7 @@ namespace Company.PL.Controllers
                 Gender = Enum.Parse<Gender>(employee.Gender),
                 EmployeeType = Enum.Parse<EmployeeType>(employee.EmployeeType),
                 DepartmentId = employee.DepartmentId,
+                ImageName = employee.ImageName,
             });
         }
 
@@ -125,7 +134,8 @@ namespace Company.PL.Controllers
                     HiringDate= employeeViewModel.HiringDate,
                     PhoneNumber = employeeViewModel.PhoneNumber,
                     Salary = employeeViewModel.Salary,
-                    DepartmentId = employeeViewModel.DepartmentId
+                    DepartmentId = employeeViewModel.DepartmentId,
+                    Image = employeeViewModel.Image,
                 });
                 if (result > 0)
                 {
@@ -155,6 +165,7 @@ namespace Company.PL.Controllers
         #endregion
 
         #region Delete
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Delete(int id)
         {
