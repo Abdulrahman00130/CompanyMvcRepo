@@ -79,7 +79,7 @@
     </form>
 
     <form asp-action="Index" class="d-flex flex-fill" method="get">
-        <input class="form-control me-2" type="text" name="RoleSearchName" placeholder="Search Role By Name" />
+        <input id="searchInp" class="form-control me-2" type="text" name="RoleSearchName" placeholder="Search Role By Name" />
         <input type="submit" class="btn btn-outline-success" value="Search" />
     </form>
 </div>
@@ -89,7 +89,7 @@
 <br />
 @if (Model?.Any() ?? false)
 {
-    <table class="table table-striped table-hover mt-3">
+    <table id="roleTable" class="table table-striped table-hover mt-3">
         <thead class="text-center">
             <tr>
                 <th>Id</th>
@@ -135,3 +135,26 @@ else
         <h2>No Roles Found !!</h2>
     </div>
 }
+
+<script>
+    $(document).ready(function () {
+        const searchBar = $('#searchInp');
+        const table = $('#roleTable');
+
+        searchBar.on('keyup', function (event) {
+            var searchValue = searchBar.val();
+
+            $.ajax({
+                url: '/Role/Search',
+                type: 'Get',
+                data: { roleSearchName: searchValue },
+                success: function (result) {
+                    table.html(result);
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        });
+    });
+</script>

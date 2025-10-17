@@ -6,6 +6,10 @@ using Company.DAL.Data.Contexts;
 using Company.DAL.Models.IdentityModels;
 using Company.DAL.Repositories.Classes;
 using Company.DAL.Repositories.Interfaces;
+using Company.PL.Settings;
+using Company.PL.Utilities;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -45,6 +49,24 @@ namespace Company.PL
             builder.Services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/Account/Login";
+                options.AccessDeniedPath = "/Account/AccessDenied";
+            });
+
+            builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+            builder.Services.Configure<TwilioSettings>(builder.Configuration.GetSection("TwilioSettings"));
+
+            builder.Services.AddScoped<IEmailService, EmailService>();
+            builder.Services.AddScoped<ITwilioService, TwilioService>();
+
+            builder.Services.AddAuthentication(o =>
+            {
+                o.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
+                o.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+            }).AddGoogle(o =>
+            {
+                o.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+                o.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+
             });
 
             #endregion
@@ -68,7 +90,7 @@ namespace Company.PL
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Account}/{action=Login}/{id?}");
             #endregion
 
             app.Run();

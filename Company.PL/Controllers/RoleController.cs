@@ -40,6 +40,36 @@ namespace Company.PL.Controllers
 
             return View(roles);
         }
+
+
+        #endregion
+
+        #region Search
+        public IActionResult Search(string roleSearchName)
+        {
+            var rolesList = _roleManager.Roles.ToList();
+            List<RoleViewModel> roles;
+
+            if (string.IsNullOrWhiteSpace(roleSearchName))
+            {
+                roles = rolesList.Select(r => new RoleViewModel
+                {
+                    Id = r.Id,
+                    RoleName = r.Name
+                }).ToList();
+            }
+            else
+            {
+                roles = rolesList.Where(r => r.Name.ToLower().Contains(roleSearchName.ToLower()))
+                                 .Select(r => new RoleViewModel
+                                 {
+                                     Id = r.Id,
+                                     RoleName = r.Name
+                                 }).ToList();
+            }
+
+            return PartialView("PartialViews/RoleTablePartialView", roles);
+        }
         #endregion
 
         #region Create
@@ -158,6 +188,7 @@ namespace Company.PL.Controllers
         #endregion
 
         #region Delete
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Delete([FromRoute] string id)
         {

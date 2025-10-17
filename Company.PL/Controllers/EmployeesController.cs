@@ -18,6 +18,11 @@ namespace Company.PL.Controllers
             var employees = _employeeService.GetAllEmployees(EmployeeSearchName);
             return View(employees);
         }
+        public IActionResult Search(string? EmployeeSearchName)
+        {
+            var employees = _employeeService.GetAllEmployees(EmployeeSearchName);
+            return PartialView("PartialViews/EmployeeTablePartialView", employees);
+        }
 
         #region Create
         [HttpGet]
@@ -160,6 +165,7 @@ namespace Company.PL.Controllers
         #endregion
 
         #region Delete
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Delete(int id)
         {

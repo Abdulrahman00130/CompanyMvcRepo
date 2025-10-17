@@ -1,13 +1,19 @@
 ﻿using Company.DAL.Models.IdentityModels;
 using Company.PL.Utilities;
 using Company.PL.ViewModels;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Security.Policy;
 
 namespace Company.PL.Controllers
 {
-    public class AccountController(UserManager<AppUser> _userManager, SignInManager<AppUser> _signInManager) : Controller
+    public class AccountController(UserManager<AppUser> _userManager, 
+                                   SignInManager<AppUser> _signInManager,
+                                   IEmailService _emailService,
+                                   ITwilioService _twilioService) : Controller
     {
 
         #region Register
@@ -75,6 +81,32 @@ namespace Company.PL.Controllers
 
         #endregion
 
+        #region LoginUsingGoogle
+        public IActionResult GoogleLogin()
+        {
+            var prop = new AuthenticationProperties
+            {
+                RedirectUri = Url.Action("GoogleResponse")
+            };
+            return Challenge(prop, GoogleDefaults.AuthenticationScheme);
+        }
+
+        public async Task<IActionResult> GoogleResponse()
+        {
+            var result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
+            var claims = result.Principal.Identities.FirstOrDefault().Claims.Select(claim => new
+            {
+                claim.Issuer,
+                claim.OriginalIssuer,
+                claim.Type,
+                claim.Value,
+            });
+
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+
+        #endregion
+
         #region Logout
         [HttpGet]
         public IActionResult Logout()
@@ -82,7 +114,7 @@ namespace Company.PL.Controllers
             var result = _signInManager.SignOutAsync();
             if (!result.IsCompletedSuccessfully) TempData["FailMessage"] = "LogOut failed";
 
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return RedirectToAction(nameof(AccountController.Login), "Account");
         }
         #endregion
 
@@ -104,10 +136,10 @@ namespace Company.PL.Controllers
                     {
                         To = viewModel.Email,
                         Subject = "CompanyMvc password reset link",
-                        Body = $"Click the link below to reset your password\n\n{url}",   // To Do
+                        Body = $"Click the link below to reset your password\n\n{url}",
                     };
                     // Send Email
-                    EmailSettings.SendEmail(email);
+                    _emailService.SendEmail(email);
                     return RedirectToAction(nameof(AccountController.CheckYourInbox));
                 }
             }
@@ -115,9 +147,33 @@ namespace Company.PL.Controllers
             ModelState.AddModelError(string.Empty, "Invalid Operation");
             return View(nameof(ForgetPassword),viewModel);
         }
+
+        public IActionResult SendResetPasswordLinkSMS(ForgetPasswordViewModel viewModel)
+        {
+            if(!ModelState.IsValid) return View(nameof(ForgetPassword), viewModel);
+
+            var user = _userManager.FindByEmailAsync(viewModel.Email).Result;
+            if (user is not null)
+            {
+                string token = _userManager.GeneratePasswordResetTokenAsync(user).Result;
+                string url = Url.Action(nameof(ResetPassword), "Account", new { user.Email, Token = token }, "https", "localhost:44301");
+                var sms = new SMS
+                {
+                    To = user.PhoneNumber,
+                    Body = $"Click the link below to reset your password\n\n{url}"
+                };
+                _twilioService.SendSMS(sms);
+                return RedirectToAction(nameof(CheckPhoneMessages));
+            }
+
+            ModelState.AddModelError("", "Invalid Operation");
+            return View(nameof(ForgetPassword), viewModel);
+        }
         #endregion
 
         public IActionResult CheckYourInbox() => View();
+        public IActionResult CheckPhoneMessages() => View();
+        public IActionResult AccessDenied() => View();
 
         #region ResetPassword
         [HttpGet]

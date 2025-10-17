@@ -47,6 +47,42 @@ namespace Company.PL.Controllers
         }
         #endregion
 
+        #region Search
+        public IActionResult Search(string userSearchName)
+        {
+            var usersList = _userManager.Users.ToList();
+            List<UserViewModel> users;
+
+            if (string.IsNullOrWhiteSpace(userSearchName))
+            {
+                users = usersList.Select(u => new UserViewModel
+                {
+                    Id = u.Id,
+                    FName = u.FirstName,
+                    LName = u.LastName,
+                    Email = u.Email,
+                    PhoneNumber = u.PhoneNumber,
+                    Roles = _userManager.GetRolesAsync(u).Result.ToList()
+                }).ToList();
+            }
+            else
+            {
+                users = usersList.Where(u => $"{u.FirstName}{u.LastName}".ToLower().Contains(userSearchName.ToLower()))
+                                 .Select(u => new UserViewModel
+                                 {
+                                     Id = u.Id,
+                                     FName = u.FirstName,
+                                     LName = u.LastName,
+                                     Email = u.Email,
+                                     PhoneNumber = u.PhoneNumber,
+                                     Roles = _userManager.GetRolesAsync(u).Result.ToList()
+                                 }).ToList();
+            }
+
+            return PartialView("PartialViews/UserTablePartialView", users);
+        }
+        #endregion
+
         #region Details
         public IActionResult Details(string id)
         {
@@ -129,6 +165,7 @@ namespace Company.PL.Controllers
         #endregion
 
         #region Delete
+        [Authorize(Roles = "Admin,Moderator")]
         [HttpGet]
         public IActionResult Delete([FromRoute] string id)
         {
